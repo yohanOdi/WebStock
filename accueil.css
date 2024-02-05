@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header, main, footer {
+    margin: 20px;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+.centered-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.equipment-type {
+    text-align: center;
+    font-size: 24px; /* Ajustez la taille du texte au besoin */
+    font-weight: bold;
+    margin-bottom: 20px; /* Espace entre le titre et la liste d'équipements */
+}
+
+.equipment-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centre les éléments horizontalement */
+}
+
+.thumbnail {
+    width: 100px; /* Ajustez la largeur selon vos besoins */
+    height: 100px; /* Laissez la hauteur auto pour maintenir le rapport largeur-hauteur */
+}
+
+.equipment-card {
+    /* Vos styles pour les cartes d'équipement */
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 190px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    display: inline-block; /* Ajoutez cette ligne pour afficher les cartes en ligne */
+}
+
+.element-valid {
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Box shadow verte */
+  }
+
+.element-modify {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+.type-container {
+    text-align: center;
+    margin-bottom: 20px; /* Espace entre le texte du type et les cartes d'équipement */
+}
+
+
+/* Ajoutez ces styles dans votre fichier CSS existant */
+input.quantity {
+    width: 40px; /* Vous pouvez ajuster la largeur selon vos besoins */
+    height: 15px; /* Vous pouvez ajuster la hauteur selon vos besoins */
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centre les éléments horizontalement */
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
