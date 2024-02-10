@@ -2,14 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const equipmentList = document.getElementById("equipment-list");
 
     async function fetchEquipementsByType(type) {
-        console.log('Fetching equipements for type:', type);
     
         try {
-            const response = await fetch(`http://localhost:3000/${type}`);
+            const response = await fetch(`http://192.168.1.86:3000/${type}`);
             const result = await response.json();
-    
-            console.log('URL:', `http://localhost:3000/${type}`);
-            console.log(`Result for type ${type} :`, result);
     
             return { success: result.success, [type]: result[type.toLowerCase()] };
         } catch (error) {
@@ -19,8 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }    
 
     async function fetchAndDisplayEquipements(types) {
-        console.log('Fetching equipements for types:', types);
-        
         const equipementsData = [];
     
         try {
@@ -28,30 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 const result = await fetchEquipementsByType(type);
     
                 if (result && result.success && result[type] && result[type].length > 0) {
-                    console.log(`Adding equipements for type ${type} to equipementsData:`, result[type]);
                     if (result[type]) {
                         equipementsData.push(...result[type]);
                       }
                 } else {
-                    console.log('Result after fetching:', result);
-                    console.log(`No equipements found for type ${type}`);
+                    alert(`Pas d'équipement trouvé pour le type :  ${type}`);
                 }
             }
     
-            console.log('Equipements data before displaying:', equipementsData);
-    
             displayEquipmentList(equipementsData);
-            console.log('equipementData', equipementsData);
         } catch (error) {
             console.error("Erreur lors de la récupération des équipements", error);
         }
-    
-        console.log('Fetch equipements completed.');
     }    
 
     function displayEquipmentList(data) {
-        console.log('Displaying equipment list.');
-    
+
         equipmentList.innerHTML = "";
     
         if (data && Array.isArray(data)) {
@@ -79,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         } else {
             console.error("Les données d'équipement ne sont pas définies ou ne sont pas un tableau.");
-            console.log("Data at this point:", data);
             return;
         }
     }    
@@ -143,10 +128,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
     
-        console.log("Nouvelle quantité:", newQuantity);
-    
         try {
-            const response = await fetch("http://localhost:3000/updateQuantity", {
+            const response = await fetch("http://192.168.1.86:3000/updateQuantity", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -203,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const equipmentCard = this.closest(".equipment-card");
     
         try {
-            const response = await fetch(`http://localhost:3000/equipements/${equipmentId}`);
+            const response = await fetch(`http://192.168.1.86:3000/equipements/${equipmentId}`);
             const contentType = response.headers.get('content-type');
     
             if (contentType && contentType.includes('application/json')) {
@@ -225,10 +208,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }    
 
     function restoreOriginalCard(equipmentCard, equipmentArray) {
-        console.log('Equipment in restoreOriginalCard:', equipmentArray);
     
         if (!equipmentArray || !Array.isArray(equipmentArray) || equipmentArray.length === 0) {
-            console.error('Invalid equipment data:', equipmentArray);
+            console.error('donnée invalide:', equipmentArray);
             return;
         }
     
@@ -254,5 +236,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    fetchAndDisplayEquipements(["imprimante", "zipette", "poste_wind", "stock30", "ecran", "ruban", "toner", "platine_axel", "borne_dect", "carte_dect", "cable_rj45", "multi_prise", "batterie"]);
+    fetchAndDisplayEquipements(["stock30", "imprimante", "platine", "zipette", "batterie", "ecran", "tablette", "cable_rj45", "borne_dect", "carte_dect", "ruban", "toner", "multi_prise", "poste_wind"]);
 });
