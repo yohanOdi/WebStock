@@ -1,3 +1,29 @@
+// Fonction pour vérifier le token JWT au chargement de la page
+async function checkTokenValidity() {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+        try {
+            const response = await fetch('http://192.168.1.86:3000/verifyToken', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                // Redirection automatique vers la page d'accueil si le token est valide
+                window.location.href = "accueil.html";
+            } else {
+                console.error('Le token est invalide ou a expiré:', result.message);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la vérification du token:', error);
+        }
+    }
+}
+
+// Soumission du formulaire de connexion
 document.getElementById("login-form").addEventListener("submit", async function(event) {
     event.preventDefault();
 
@@ -7,7 +33,7 @@ document.getElementById("login-form").addEventListener("submit", async function(
 
     try {
         // Envoyer les informations de connexion à votre API
-        const response = await fetch('http://127.0.0.1:3000/login', {
+        const response = await fetch('http://192.168.1.86:3000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -18,16 +44,20 @@ document.getElementById("login-form").addEventListener("submit", async function(
         const result = await response.json();
 
         if (result.success) {
-            // Stocker un cookie de session (ou utiliser une méthode plus sécurisée comme les tokens JWT)
-            document.cookie = "session=true";
+            // Stocker le token dans le localStorage
+            localStorage.setItem('accessToken', result.token);
+            console.log('Token JWT stocké avec succès dans le localStorage.');
 
-            // Rediriger vers la page principale
+            // Redirection vers la page principale
             window.location.href = "accueil.html";
         } else {
+            // Afficher un message d'erreur à l'utilisateur
             alert("Nom d'utilisateur ou mot de passe incorrect");
         }
     } catch (error) {
-        console.error('Erreur lors de la connexion', error);
         alert('Erreur lors de la connexion');
     }
 });
+
+// Vérifier la validité du token au chargement de la page
+window.addEventListener('DOMContentLoaded', checkTokenValidity);

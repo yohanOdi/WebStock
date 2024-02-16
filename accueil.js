@@ -1,8 +1,36 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    // Vérification du token
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        // Si le token n'est pas présent, rediriger vers la page de connexion
+        window.location.href = "login.html";
+        return;
+    }
+
+    try {
+        const response = await fetch('http://192.168.1.86:3000/verifyToken', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const result = await response.json();
+        if (!result.success) {
+            // Si le token n'est pas valide, rediriger vers la page de connexion
+            window.location.href = "login.html";
+            return;
+        }
+    } catch (error) {
+        console.error('Erreur lors de la vérification du token:', error);
+        // En cas d'erreur, rediriger vers la page de connexion par précaution
+        window.location.href = "login.html";
+        return;
+    }
+    
     const equipmentList = document.getElementById("equipment-list");
 
     async function fetchEquipementsByType(type) {
-    
         try {
             const response = await fetch(`http://192.168.1.86:3000/${type}`);
             const result = await response.json();
